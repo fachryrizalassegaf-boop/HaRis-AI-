@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#6955db">
+<title>HaRis — Your HR AI Assistant</title>
+<style>
+:root{--ink:#202337;--muted:#626779;--purple:#6955db;--mint:#def8ec;--line:#e6e7ef}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#f8f9fc;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.65}
+a{color:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button{font:inherit}
+.wrap{width:min(1080px,calc(100% - 40px));margin:auto}
+nav{display:flex;align-items:center;justify-content:space-between;padding:24px 0}
+.logo{font-size:25px;font-weight:850;text-decoration:none;letter-spacing:-1px}
+.logo span{color:var(--purple)}
+.nav-link{text-decoration:none;font-size:14px;font-weight:650}
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:54px;align-items:center;padding:58px 0 72px}
+.eyebrow{color:var(--purple);font-weight:750;font-size:12px;letter-spacing:1.8px;text-transform:uppercase}
+h1{font-size:clamp(48px,7vw,80px);line-height:1.05;letter-spacing:-4px;margin:18px 0}
+h1 span{color:var(--purple)}
+.tagline{font-size:21px;line-height:1.5;max-width:540px}
+.description{color:var(--muted);max-width:490px}
+.badge{display:inline-flex;align-items:center;background:var(--mint);color:#216146;border:1px solid #bcebd5;border-radius:99px;padding:7px 13px;font-size:12px;font-weight:700}
+.badge:before{content:"";width:7px;height:7px;background:#35ad73;border-radius:50%;margin-right:7px;box-shadow:0 0 0 4px #35ad731a;animation:pulse 2s infinite}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 21px;border-radius:12px;text-decoration:none;font-weight:700;border:1px solid transparent}
+.primary{background:var(--purple);color:white;box-shadow:0 8px 22px #6955db25}
+.secondary{background:white;border-color:var(--line)}
+.btn:hover{transform:translateY(-2px)}
+.visual{background:#eeebff;border:1px solid #ded9ff;border-radius:28px;padding:30px;position:relative}
+.avatar{width:106px;height:106px;display:grid;place-items:center;background:var(--purple);color:white;font-size:43px;font-weight:850;border-radius:28px;margin-bottom:22px;box-shadow:0 12px 30px #6955db25}
+.visual h2{margin:0;font-size:25px;letter-spacing:-1px}
+.visual p{color:var(--muted);margin:6px 0 22px}
+.task{background:white;border-radius:12px;padding:13px 15px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px}
+.task span:last-child{color:var(--purple);font-size:11px;font-weight:750}
+.visual-note{display:block;margin-top:18px;font-size:12px;color:var(--muted)}
+section{padding:34px 0}
+.section-title{font-size:clamp(27px,4vw,36px);line-height:1.2;letter-spacing:-1px;margin:10px 0}
+.section-copy{color:var(--muted);margin:0 0 26px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:white;border:1px solid var(--line);border-radius:20px;padding:27px}
+.card h3{margin:0 0 14px;font-size:20px}
+.chaos{background:#fff8f6}
+.solution{background:#f0fbf6}
+ul{padding-left:21px;margin:0}
+li{margin:12px 0}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.icon{display:grid;place-items:center;width:46px;height:46px;background:#f0edff;border-radius:13px;font-size:22px;margin-bottom:18px}
+.features h3{font-size:18px;margin-bottom:10px}
+.features p{font-size:14px;color:var(--muted)}
+.tool{display:inline-block;font-size:11px;font-weight:700;color:var(--purple);background:#f2efff;padding:5px 9px;border-radius:7px}
+.approval{margin-top:18px;background:var(--mint);border:1px solid #bcebd5;border-radius:13px;padding:15px 19px;font-size:14px}
+.demo{padding:0;overflow:hidden}
+.demo-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 24px;border-bottom:1px solid var(--line)}
+.demo-top strong{font-size:15px}
+.demo-top span{font-size:11px;color:var(--muted)}
+.scenarios{display:flex;flex-wrap:wrap;gap:9px;padding:20px 24px 0}
+.scenario{border:1px solid #ddd8f5;border-radius:99px;background:#f6f4ff;color:var(--purple);padding:9px 14px;cursor:pointer;font-size:13px;font-weight:700}
+.scenario:hover,.scenario[aria-pressed="true"]{background:var(--purple);color:white}
+.scenario:disabled{opacity:.55;cursor:wait}
+.chat{padding:24px;min-height:280px;display:flex;flex-direction:column;gap:16px}
+.message{max-width:85%;padding:13px 17px;border-radius:16px;font-size:14px;white-space:pre-line;animation:appear .3s ease}
+.agent{align-self:flex-start;background:#f0f1f7}
+.user{align-self:flex-end;background:var(--purple);color:white}
+.sender{display:block;font-size:11px;font-weight:750;opacity:.7;margin-bottom:5px}
+.typing{align-self:flex-start;background:#f0f1f7;padding:15px 18px;border-radius:16px}
+.typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#9290a6;margin:0 2px;animation:pulse 1s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+.demo-note{margin:0;padding:0 24px 20px;color:var(--muted);font-size:12px}
+.salary-form{margin:20px 24px 0;padding:20px;background:#f8f7ff;border:1px solid var(--line);border-radius:14px}
+.salary-form h3{margin:0 0 8px;font-size:18px}
+.salary-form p{margin:0 0 16px;font-size:13px;color:var(--muted)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fields label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:650}
+.fields .wide{grid-column:1/-1}
+input,textarea{width:100%;padding:10px;border:1px solid #d6d3e4;border-radius:8px;font:inherit;background:white;color:var(--ink)}
+textarea{resize:vertical;min-height:90px}
+.salary-form button{margin-top:15px;cursor:pointer;font:inherit}
+@media(max-width:520px){.fields{grid-template-columns:1fr}}
+footer{padding:50px 0 24px}
+.cta{background:var(--ink);color:white;padding:40px;border-radius:24px;display:flex;justify-content:space-between;align-items:center;gap:24px}
+.cta h2{margin:0 0 8px;font-size:28px;letter-spacing:-1px}
+.cta p{margin:0;color:#c6c8d5;font-size:14px;max-width:480px}
+.cta .btn{background:#c8f4de;color:#214938;white-space:nowrap}
+.credit{text-align:center;color:var(--muted);font-size:12px;padding-top:24px}
+:focus-visible{outline:3px solid #a991ff;outline-offset:4px}
+@keyframes pulse{50%{opacity:.45}}
+@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){
+.hero{grid-template-columns:1fr;gap:30px;padding:30px 0}
+h1{letter-spacing:-2px}
+.compare,.features{grid-template-columns:1fr}
+.cta{flex-direction:column;align-items:flex-start;padding:28px}
+.visual{padding:24px}
+section{padding:26px 0}
+.message{max-width:95%}
+.demo-top{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}
+*,*:before{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<header class="wrap">
+<nav aria-label="Navigasi utama">
+<a class="logo" href="#">Ha<span>Ris</span><span aria-hidden="true">.</span></a>
+<a class="nav-link" href="#simulation">Try the demo ↗</a>
+</nav>
+</header>
+<main class="wrap">
+<section class="hero" aria-labelledby="hero-title">
+<div>
+<div class="eyebrow">Your digital HR teammate</div>
+<h1 id="hero-title">Meet <span>HaRis.</span></h1>
+<div class="badge">🟢 Status: Active &amp; Ready 24/7</div>
+<p class="tagline">Asisten AI untuk kebutuhan HR: draf kontrak, update aturan, estimasi PPh 21, dan analisis kesesuaian gaji.</p>
+<p class="description">Less admin, more people. HaRis membantu menyiapkan pekerjaan HR dengan rapi, sementara keputusan dan approval tetap di tangan Anda.</p>
+<div class="actions">
+<a class="btn primary" href="https://wa.me/6281802457351" target="_blank" rel="noopener noreferrer">Let's talk di WhatsApp ↗</a>
+<a class="btn secondary" href="#simulation">Coba simulasi ↓</a>
+</div>
+</div>
+<div class="visual">
+<div class="avatar" role="img" aria-label="Avatar HaRis dengan monogram HR">HR</div>
+<h2>Your HR workflow, simplified.</h2>
+<p>Prepare → Review → Your approval</p>
+<div class="task"><span>📄 Draf kontrak kerja</span><span>FOR REVIEW</span></div>
+<div class="task"><span>🔎 Ringkasan update aturan</span><span>FOR REVIEW</span></div>
+<div class="task"><span>🧮 Estimasi PPh 21</span><span>FOR REVIEW</span></div>
+<div class="task"><span>💸 Analisis salary &amp; job description</span><span>FOR REVIEW</span></div>
+<small class="visual-note">Ilustrasi alur kerja yang dirancang untuk HaRis.</small>
+</div>
+</section>
+<section aria-labelledby="compare-title">
+<div class="eyebrow">From chaos to clarity</div>
+<h2 id="compare-title" class="section-title">Admin HR lebih teratur.</h2>
+<p class="section-copy">Dari dokumen hingga evaluasi gaji, dibantu dalam satu alur.</p>
+<div class="compare">
+<article class="card chaos">
+<h3>↘ The Chaos</h3>
+<ul>
+<li>Pembuatan kontrak kerja terlambat karena proses manual.</li>
+<li>Update peraturan perundang-undangan sulit dipantau dan dirangkum.</li>
+<li>Penghitungan PPh 21 membutuhkan ketelitian dan waktu.</li>
+<li>Kesesuaian gaji dengan job description dan acuan upah daerah belum dievaluasi.</li>
+</ul>
+</article>
+<article class="card solution">
+<h3>↗ The Solution</h3>
+<ul>
+<li>Menyiapkan draf kontrak dari template dan data yang Anda berikan.</li>
+<li>Membantu merangkum perubahan aturan dengan referensi sumber resmi.</li>
+<li>Menyiapkan estimasi PPh 21 beserta input dan asumsi untuk ditinjau.</li>
+<li>Membandingkan gaji dengan UMR/UMP/UMK yang Anda masukkan dan menyiapkan review tanggung jawab jabatan.</li>
+</ul>
+</article>
+</div>
+</section>
+<section aria-labelledby="capabilities-title">
+<div class="eyebrow">Core capabilities</div>
+<h2 id="capabilities-title" class="section-title">Built for your HR day.</h2>
+<p class="section-copy">Rancangan fitur dan tools untuk mendukung pekerjaan HaRis.</p>
+<div class="features">
+<article class="card">
+<div class="icon" aria-hidden="true">📄</div>
+<h3>Contract Drafting</h3>
+<p>Susun draf kontrak dari template yang disetujui, cek kelengkapan data, lalu ajukan untuk review Anda.</p>
+<span class="tool">Google Docs + Drive</span>
+</article>
+<article class="card">
+<div class="icon" aria-hidden="true">🔎</div>
+<h3>Regulation Brief</h3>
+<p>Ringkas referensi aturan beserta sumber, tanggal, dan poin yang perlu ditinjau sebelum diterapkan.</p>
+<span class="tool">Referensi JDIH + DJP</span>
+</article>
+<article class="card">
+<div class="icon" aria-hidden="true">🧮</div>
+<h3>Salary &amp; PPh 21 Assistant</h3>
+<p>Bantu estimasi PPh 21 dan evaluasi gaji berdasarkan job description, gaji yang ditawarkan, serta UMR/UMP/UMK daerah dan tahun acuan. Hasil diajukan untuk approval Anda.</p>
+<span class="tool">Google Sheets</span>
+</article>
+</div>
+<div class="approval">🔐 <strong>You stay in control.</strong> HaRis meminta approval Anda sebelum dokumen dikirim, perubahan diterapkan, atau hasil perhitungan digunakan.</div>
+</section>
+<section id="simulation" aria-labelledby="simulation-title">
+<div class="eyebrow">Interactive simulation</div>
+<h2 id="simulation-title" class="section-title">See HaRis in action.</h2>
+<p class="section-copy">Pilih skenario untuk melihat contoh percakapan dan alur approval.</p>
+<div class="card demo">
+<div class="demo-top"><strong>HaRis · HR Assistant</strong><span>DEMO / SIMULASI</span></div>
+<div class="scenarios" role="group" aria-label="Pilih skenario chat">
+<button class="scenario" type="button" data-case="contract" aria-pressed="false">📄 Draf kontrak</button>
+<button class="scenario" type="button" data-case="rules" aria-pressed="false">🔎 Update aturan</button>
+<button class="scenario" type="button" data-case="tax" aria-pressed="false">🧮 Estimasi PPh 21</button>
+<button class="scenario" type="button" data-case="salary" aria-pressed="false">💸 Analisis salary</button>
+</div>
+<form class="salary-form" id="salary-form">
+<h3>Salary check · Masukkan data Anda</h3>
+<p>Demo membandingkan angka gaji dengan acuan yang Anda isi. Kesesuaian dengan job description perlu review Anda dan data pembanding jabatan; hasil bukan penetapan kepatuhan hukum.</p>
+<div class="fields">
+<label class="wide">Job description<textarea name="jobdesc" required maxlength="2000" aria-label="Uraian tugas dan tanggung jawab"></textarea></label>
+<label>Daerah kerja<input name="region" required maxlength="100" autocomplete="off"></label>
+<label>Tahun acuan<input name="year" type="number" required min="2000" max="2100" step="1"></label>
+<label>Gaji bulanan yang dibandingkan (Rp)<input name="salary" type="number" required min="1" max="1000000000000" step="1"></label>
+<label>UMR/UMP/UMK bulanan setempat (Rp)<input name="minimum" type="number" required min="1" max="1000000000000" step="1"></label>
+</div>
+<button class="btn primary" type="submit">Analisis salary →</button>
+</form>
+<div class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions" aria-label="Percakapan simulasi HaRis">
+<div class="message agent"><span class="sender">HaRis</span>Hi! Saya HaRis 👋 Pilih salah satu skenario di atas. Saya membantu menyiapkan pekerjaan, lalu meminta approval Anda.</div>
+</div>
+<p class="demo-note">Data salary diproses di browser tanpa dikirim atau disimpan. Demo tidak mengakses tools, memverifikasi upah daerah, memeriksa aturan terkini, atau menghitung pajak langsung.</p>
+</div>
+</section>
+</main>
+<footer class="wrap">
+<div class="cta">
+<div><h2>Ready for a smarter HR workflow?</h2><p>Mari diskusikan kebutuhan HR Anda dan alur approval yang sesuai.</p></div>
+<a class="btn" href="https://wa.me/6281802457351" target="_blank" rel="noopener noreferrer">Chat via WhatsApp ↗</a>
+</div>
+<p class="credit">Built with AI · AI Builder Bootcamp Showcase</p>
+</footer>
+<script>
+const scenarios = {
+contract: {
+user: "HaRis, bantu siapkan draf kontrak untuk karyawan baru.",
+agent: "Siap! Saya akan meminta data karyawan, jenis kontrak, periode kerja, dan template yang Anda setujui.\n\nSetelah data lengkap, saya menyiapkan draf serta menandai bagian yang perlu ditinjau.\n\n🔐 Saya meminta approval Anda sebelum kontrak dikirim atau digunakan."
+},
+rules: {
+user: "HaRis, bantu cek update aturan yang berkaitan dengan HR.",
+agent: "Siap! Saya akan meminta topik dan periode yang ingin diperiksa, lalu menelusuri referensi resmi yang tersedia.\n\nRingkasan mencantumkan sumber, tanggal, status aturan, dan poin yang perlu ditinjau. Jika informasi belum terverifikasi, saya akan menandainya.\n\n🔐 Saya meminta approval Anda sebelum perubahan diterapkan ke kebijakan HR."
+},
+tax: {
+user: "HaRis, bantu siapkan estimasi PPh 21 karyawan.",
+agent: "Siap! Saya akan meminta periode pajak, data penghasilan, status PTKP, dan informasi payroll yang relevan.\n\nEstimasi disiapkan dengan aturan yang telah diverifikasi serta rincian input dan asumsi untuk diperiksa. Demo ini belum melakukan perhitungan.\n\n🔐 Saya meminta approval Anda sebelum hasil digunakan dalam payroll atau pelaporan."
+},
+salary: {
+user: "HaRis, apakah salary ini sudah sesuai dengan job description dan UMR daerah setempat?",
+agent: "Silakan isi job description, daerah kerja, tahun, gaji bulanan, dan UMR/UMP/UMK pada form di atas.\n\nSaya akan membandingkan angka yang Anda masukkan. Untuk menilai kesesuaian tanggung jawab, saya juga memerlukan level jabatan, pengalaman, dan benchmark gaji yang relevan.\n\n🔐 Kesimpulan dan rekomendasi penyesuaian tetap menunggu review serta approval Anda."
+}
+};
+const chat = document.getElementById("chat");
+const buttons = [...document.querySelectorAll(".scenario")];
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+function addMessage(text, kind, name) {
+const bubble = document.createElement("div");
+bubble.className = "message " + kind;
+const sender = document.createElement("span");
+sender.className = "sender";
+sender.textContent = name;
+bubble.append(sender, document.createTextNode(text));
+chat.appendChild(bubble);
+}
+async function play(scenario, selected) {
+buttons.forEach(item => {
+item.disabled = true;
+item.setAttribute("aria-pressed", String(item === selected));
+});
+document.querySelector('#salary-form button').disabled = true;
+chat.replaceChildren();
+addMessage(scenario.user, "user", "Anda");
+await wait(400);
+const typing = document.createElement("div");
+typing.className = "typing";
+typing.setAttribute("role", "status");
+typing.setAttribute("aria-label", "HaRis sedang mengetik");
+for (let i = 0; i < 3; i++) {
+const dot = document.createElement("span");
+dot.setAttribute("aria-hidden", "true");
+typing.appendChild(dot);
+}
+chat.appendChild(typing);
+await wait(1200);
+typing.remove();
+addMessage(scenario.agent, "agent", "HaRis");
+buttons.forEach(item => item.disabled = false);
+document.querySelector('#salary-form button').disabled = false;
+}
+buttons.forEach(button => button.addEventListener("click", () => play(scenarios[button.dataset.case], button)));
+document.getElementById('salary-form').addEventListener('submit', event => {
+event.preventDefault();
+if (buttons.some(button => button.disabled)) return;
+const data = new FormData(event.currentTarget);
+const salary = Number(data.get('salary')), minimum = Number(data.get('minimum'));
+const jobdesc = String(data.get('jobdesc')).trim(), region = String(data.get('region')).trim();
+if (!jobdesc || !region || !Number.isFinite(salary) || !Number.isFinite(minimum) || salary <= 0 || minimum <= 0) return;
+const rupiah = value => new Intl.NumberFormat('id-ID', {style:'currency',currency:'IDR',maximumFractionDigits:0}).format(value);
+const difference = salary - minimum;
+const status = difference < 0 ? 'Di bawah acuan yang Anda masukkan' : difference === 0 ? 'Sama dengan acuan yang Anda masukkan' : 'Di atas acuan yang Anda masukkan';
+play({user:`Analisis salary di ${region}, tahun ${data.get('year')}.\nJob description: ${jobdesc}\nGaji: ${rupiah(salary)} · Acuan: ${rupiah(minimum)}`,agent:`Hasil perbandingan angka: ${status}.\nSelisih: ${rupiah(Math.abs(difference))} (${Math.abs(difference / minimum * 100).toFixed(1)}%).\n\nReview job description: ${jobdesc}\nKesesuaian gaji dengan tugas ini belum dapat dipastikan dari angka upah daerah saja. Mohon lengkapi level jabatan, pengalaman, dan benchmark posisi sejenis untuk evaluasi lanjutan. Acuan daerah/tahun dan komponen gaji juga perlu diverifikasi.\n\n🔐 Hasil awal ini menunggu review dan approval Anda sebelum digunakan.`}, buttons.find(button => button.dataset.case === 'salary'));
+});
+</script>
+</body>
+</html>
