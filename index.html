@@ -267,6 +267,10 @@ console.warn("Gagal menyimpan ringkasan ke Supabase", error);
 const chat = document.getElementById("chat");
 const buttons = [...document.querySelectorAll(".scenario")];
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+function showChat() {
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+chat.scrollIntoView({behavior: reduce ? "auto" : "smooth", block: "nearest"});
+}
 function addMessage(text, kind, name) {
 const bubble = document.createElement("div");
 bubble.className = "message " + kind;
@@ -284,6 +288,7 @@ item.setAttribute("aria-pressed", String(item === selected));
 document.querySelector('#salary-form button').disabled = true;
 chat.replaceChildren();
 addMessage(scenario.user, "user", "Anda");
+showChat();
 await wait(400);
 const typing = document.createElement("div");
 typing.className = "typing";
@@ -300,6 +305,7 @@ typing.remove();
 addMessage(scenario.agent, "agent", "HaRis");
 buttons.forEach(item => item.disabled = false);
 document.querySelector('#salary-form button').disabled = false;
+showChat();
 }
 buttons.forEach(button => button.addEventListener("click", () => play(scenarios[button.dataset.case], button)));
 document.getElementById('salary-form').addEventListener('submit', event => {
